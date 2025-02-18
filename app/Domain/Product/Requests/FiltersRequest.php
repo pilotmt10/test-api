@@ -13,7 +13,7 @@ class FiltersRequest extends FormRequest
             'categoryName' => 'string|nullable',
             'priceFrom' => 'numeric|nullable',
             'priceTo' => 'numeric|nullable',
-            'active' => 'boo|nullablel'
+            'active' => 'boo|nullable'
         ];
     }
 }
