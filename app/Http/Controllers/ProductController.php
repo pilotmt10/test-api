@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Base\Responses\SuccessResponse;
+use App\Domain\Product\Contracts\ProductServiceContract;
 use App\Domain\Product\Requests\CreateRequest;
 use App\Domain\Product\Requests\FiltersRequest;
 use App\Domain\Product\Requests\UpdateRequest;
 use App\Domain\Product\Resources\ProductItemResource;
-use App\Domain\Product\Services\ProductService;
 
 class ProductController extends Controller
 {
-    public function index(FiltersRequest $request, ProductService $service): array
+    public function index(FiltersRequest $request, ProductServiceContract $service): array
     {
         $filters = $request->validated();
         return ProductItemResource::collection($service->list($filters))->toArray($request);
     }
 
-    public function create(CreateRequest $request, ProductService $service): array
+    public function create(CreateRequest $request, ProductServiceContract $service): array
     {
         $fields = $request->validated();
 
@@ -25,7 +25,7 @@ class ProductController extends Controller
         return ProductItemResource::make($model)->toArray($request);
     }
 
-    public function update(UpdateRequest $request, int $id, ProductService $service): array
+    public function update(UpdateRequest $request, int $id, ProductServiceContract $service): array
     {
         $fields = $request->validated();
 
@@ -33,7 +33,7 @@ class ProductController extends Controller
         return ProductItemResource::make($model)->toArray($request);
     }
 
-    public function delete(int $id, ProductService $service): array
+    public function delete(int $id, ProductServiceContract $service): array
     {
         $service->delete($id);
         return SuccessResponse::make();

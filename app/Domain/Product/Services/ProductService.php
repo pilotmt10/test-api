@@ -2,12 +2,13 @@
 
 namespace App\Domain\Product\Services;
 
+use App\Domain\Product\Contracts\ProductServiceContract;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Repository\ProductRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductService
+class ProductService implements ProductServiceContract
 {
     public function __construct(
         private ProductRepository $productRepository
@@ -23,17 +24,6 @@ class ProductService
         return $this->productRepository->create($data);
     }
 
-    public function delete(int $id): void
-    {
-        $model = $this->productRepository->findById($id);
-
-        if ($model === null) {
-            throw new NotFoundHttpException('Товар не найден.');
-        }
-
-        $model->delete();
-    }
-
     public function update(int $id, array $fields): Product
     {
         $model = $this->productRepository->findById($id);
@@ -45,5 +35,16 @@ class ProductService
         $this->productRepository->update($model, $fields);
 
         return $model;
+    }
+
+    public function delete(int $id): void
+    {
+        $model = $this->productRepository->findById($id);
+
+        if ($model === null) {
+            throw new NotFoundHttpException('Товар не найден.');
+        }
+
+        $model->delete();
     }
 }
